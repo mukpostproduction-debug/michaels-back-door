@@ -2,12 +2,83 @@
 // Handles Menus filtering, Reservation & Event Modals, Gift Card ordering, and Web Audio Ambiance
 
 document.addEventListener('DOMContentLoaded', () => {
+  initDoorOpeningAnimation();
   initMenuRenderer();
   initModals();
   initAudioAmbiance();
   initMobileNav();
   initSmoothScroll();
 });
+
+// ==========================================
+// 0. CODED 3D DOOR OPENING & TYPOGRAPHY WRITE-OUT
+// ==========================================
+function initDoorOpeningAnimation() {
+  const doorAssembly = document.getElementById('hero-door-assembly');
+  const typoBox = document.getElementById('hero-door-typography');
+  const ctaGroup = document.getElementById('hero-cta-group');
+  const scrollIndicator = document.getElementById('hero-scroll-indicator');
+  const replayBtn = document.getElementById('hero-replay-btn');
+
+  if (!doorAssembly || !typoBox) return;
+
+  let sequenceTimer1, sequenceTimer2, sequenceTimer3;
+
+  function runSequence() {
+    clearTimeout(sequenceTimer1);
+    clearTimeout(sequenceTimer2);
+    clearTimeout(sequenceTimer3);
+
+    // 1. Initial State: Closed door centered
+    doorAssembly.classList.remove('door-opened', 'slid-left');
+    typoBox.classList.remove('visible', 'animate-write');
+    if (ctaGroup) {
+      ctaGroup.style.opacity = '0';
+      ctaGroup.style.transform = 'translateY(14px)';
+    }
+    if (scrollIndicator) {
+      scrollIndicator.style.opacity = '0';
+    }
+
+    // 2. Door swings open in 3D perspective
+    sequenceTimer1 = setTimeout(() => {
+      doorAssembly.classList.add('door-opened');
+    }, 450);
+
+    // 3. Door slides to the left & typography writes out
+    sequenceTimer2 = setTimeout(() => {
+      doorAssembly.classList.add('slid-left');
+      typoBox.classList.add('visible', 'animate-write');
+    }, 1800);
+
+    // 4. Reveal CTAs and scroll indicator
+    sequenceTimer3 = setTimeout(() => {
+      if (ctaGroup) {
+        ctaGroup.style.opacity = '1';
+        ctaGroup.style.transform = 'translateY(0)';
+      }
+      if (scrollIndicator) {
+        scrollIndicator.style.opacity = '1';
+      }
+    }, 3600);
+  }
+
+  // Run automatically on load
+  runSequence();
+
+  // Replay Button listener
+  if (replayBtn) {
+    replayBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      runSequence();
+    });
+  }
+
+  // Interactive Door Click (toggle open / closed)
+  doorAssembly.addEventListener('click', () => {
+    doorAssembly.classList.toggle('door-opened');
+  });
+}
 
 // ==========================================
 // 1. COMPREHENSIVE MENU RENDERER & SEARCH

@@ -109,35 +109,107 @@
   </div>
 
   <!-- Hero Section -->
+  <!-- Hero Section with Coded 3D Door Opening & Typography Write-out Animation -->
   <section class="hero-section" id="hero">
     <div class="hero-bg-texture"></div>
     <div class="hero-vignette"></div>
-    <div class="hero-content">
-      <div class="hero-badge-pill">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Celebrating 44 Years of Culinary Distinction • Since 1981
+
+    <!-- Replay Animation Button -->
+    <div class="hero-top-controls">
+      <button class="hero-replay-btn" id="hero-replay-btn" title="Replay Door Opening Animation">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Replay Door Opening
+      </button>
+    </div>
+
+    <!-- Main Animated Stage -->
+    <div class="intro-content-wrapper" id="intro-content-wrapper">
+      
+      <!-- 1. The 3D Coded Door Assembly -->
+      <div class="door-assembly" id="hero-door-assembly" title="Click door to open or close">
+        <div class="door-frame">
+          <!-- Radiant Interior Glow & Volumetric Light Beam -->
+          <div class="door-aperture">
+            <div class="door-aperture-glow"></div>
+          </div>
+
+          <!-- 3D Swinging Door Leaf -->
+          <div class="door-leaf" id="hero-door-leaf">
+            <div class="door-leaf-inner">
+              <!-- Fanlight Transom Arch -->
+              <div class="door-transom-box">
+                <svg viewBox="0 0 120 60" fill="none">
+                  <path d="M 6,56 A 54,54 0 0,1 114,56 Z" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.9" />
+                  <line x1="22" y1="56" x2="60" y2="56" stroke="#FFFFFF" stroke-width="2" opacity="0.85" />
+                  <line x1="60" y1="6" x2="60" y2="56" stroke="#FFFFFF" stroke-width="2" opacity="0.85" />
+                  <line x1="33" y1="23" x2="60" y2="56" stroke="#FFFFFF" stroke-width="2" opacity="0.85" />
+                  <line x1="87" y1="23" x2="60" y2="56" stroke="#FFFFFF" stroke-width="2" opacity="0.85" />
+                </svg>
+              </div>
+
+              <!-- 4 Classic Raised Panels -->
+              <div class="door-panels-grid">
+                <div class="door-panel-cell panel-top-left"></div>
+                <div class="door-panel-cell panel-top-right"></div>
+                <div class="door-panel-cell panel-bottom-left"></div>
+                <div class="door-panel-cell panel-bottom-right"></div>
+              </div>
+
+              <!-- Polished Brass Hardware (Knob & Escutcheon) -->
+              <div class="door-hardware-unit">
+                <div class="door-brass-escutcheon"></div>
+                <div class="door-brass-knob"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dramatic Light Beam that spills out as door swings open -->
+        <div class="door-light-spill" id="hero-door-spill"></div>
       </div>
-      <h1 class="hero-title">
-        Mississauga’s Hidden Jewel<br>
-        <em>Enter Through The Back Door</em>
-      </h1>
-      <p class="hero-desc">
-        For over four decades, tucked behind historic Clarkson Road North, Michael’s Back Door has welcomed guests to an intimate world of scratch pasta, prime veal, and sommelier-curated rare vintages.
-      </p>
-      <div class="hero-cta-group">
-        <a href="#walkthrough-section" class="btn btn-gold">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          Begin 3D Scroll Walkthrough
-        </a>
-        <button class="btn btn-outline-gold trigger-reservation-modal">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Reserve a Table
-        </button>
+
+      <!-- 2. Typography Box: Writes out "Michael's Back Door" -->
+      <div class="door-typography-box" id="hero-door-typography">
+        <svg class="door-text-svg" viewBox="0 0 540 160" width="100%">
+          <defs>
+            <linearGradient id="goldTextGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="30%" stop-color="#F5D19A"/>
+              <stop offset="70%" stop-color="#E7951B"/>
+              <stop offset="100%" stop-color="#B59976"/>
+            </linearGradient>
+          </defs>
+          <!-- Line 1: MICHAEL'S -->
+          <text x="10" y="58" class="svg-door-title-text svg-line-1" font-size="52">MICHAEL’S</text>
+          <!-- Line 2: BACK DOOR -->
+          <text x="10" y="118" class="svg-door-title-text svg-line-2" font-size="52">BACK DOOR</text>
+          <!-- Line 3: Subtitle -->
+          <text x="12" y="148" class="svg-door-sub-text svg-line-sub">
+            ITALIAN RESTAURANT • EST. 1981 • CLARKSON VILLAGE
+          </text>
+        </svg>
+
+        <p class="hero-tagline-text">
+          Tucked away behind Clarkson Road North for 44 years. Enter through the iconic back door into Mississauga’s award-winning home of handcrafted Italian fine dining.
+        </p>
+
+        <!-- CTA Buttons inside write-out hero -->
+        <div class="hero-cta-group" id="hero-cta-group">
+          <a href="#walkthrough-section" class="btn btn-gold">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Step Inside the Walkthrough
+          </a>
+          <button class="btn btn-outline-gold trigger-reservation-modal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Reserve a Table
+          </button>
+        </div>
       </div>
+
     </div>
 
     <!-- Mouse Scroll Indicator -->
-    <a href="#walkthrough-section" class="hero-scroll-indicator">
+    <a href="#walkthrough-section" class="hero-scroll-indicator" id="hero-scroll-indicator">
       <div class="mouse-scroll-icon">
         <div class="mouse-wheel"></div>
       </div>
