@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael's Back Door — Interactive Floor Plan & 3D Walkthrough Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --espresso: #1f140f;
+      --espresso-surface: #2b1d16;
+      --espresso-border: #443126;
+      --gold-primary: #e7951b;
+      --gold-champagne: #b59976;
+      --gold-glow: rgba(231, 149, 27, 0.35);
+      --alabaster: #f8f4f1;
+      --text-muted: #a3958c;
+      --charcoal: #141517;
+      --charcoal-surface: #1e2023;
+      --charcoal-border: #32353a;
+      --wine: #691b24;
+      --solarium: #2b4c3f;
+      --wood: #543926;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: #120b08;
+      color: var(--alabaster);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* === HEADER === */
+    header {
+      background: rgba(31, 20, 15, 0.95);
+      border-bottom: 1px solid var(--espresso-border);
+      backdrop-filter: blur(12px);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 48px;
+      display: inline-block;
+    }
+
+    .brand-title h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .brand-title p {
+      font-size: 12px;
+      color: var(--gold-champagne);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .level-toggle {
+      display: flex;
+      background: #140d0a;
+      border: 1px solid var(--espresso-border);
+      border-radius: 30px;
+      padding: 4px;
+    }
+
+    .level-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .level-btn.active {
+      background: var(--gold-primary);
+      color: #120b08;
+      box-shadow: 0 2px 10px rgba(231, 149, 27, 0.4);
+    }
+
+    .mode-btn {
+      background: rgba(181, 153, 118, 0.15);
+      border: 1px solid var(--gold-champagne);
+      color: var(--gold-champagne);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .mode-btn:hover {
+      background: var(--gold-champagne);
+      color: #120b08;
+    }
+
+    .mode-btn.active {
+      background: var(--gold-primary);
+      border-color: var(--gold-primary);
+      color: #120b08;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    /* === MAIN CONTAINER === */
+    .app-workspace {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      flex: 1;
+      height: calc(100vh - 81px);
+      overflow: hidden;
+    }
+
+    /* === FLOOR PLAN CANVAS AREA === */
+    .viewport-area {
+      position: relative;
+      background: radial-gradient(circle at center, #1b120c 0%, #0e0705 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .blueprint-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: auto;
+    }
+
+    svg#blueprint-svg {
+      max-width: 100%;
+      max-height: 100%;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.8));
+      user-select: none;
+    }
+
+    /* SVG Architectural Styles */
+    .arch-wall {
+      fill: #221711;
+      stroke: #594334;
+      stroke-width: 2.5;
+    }
+
+    .arch-window {
+      stroke: #7bb5d4;
+      stroke-width: 2.5;
+      stroke-dasharray: 4 2;
+    }
+
+    .arch-door-swing {
+      stroke: var(--gold-champagne);
+      stroke-width: 1.2;
+      stroke-dasharray: 3 3;
+      fill: none;
+    }
+
+    .arch-table {
+      fill: #2f2119;
+      stroke: #664d3d;
+      stroke-width: 1.5;
+      transition: all 0.3s ease;
+    }
+
+    .arch-chair {
+      fill: #1a120d;
+      stroke: #523e31;
+      stroke-width: 1;
+    }
+
+    .room-zone {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.75;
+    }
+
+    .room-zone:hover {
+      opacity: 0.95;
+      filter: brightness(1.25);
+    }
+
+    .room-zone.selected {
+      opacity: 1;
+      stroke: var(--gold-primary) !important;
+      stroke-width: 3.5 !important;
+      filter: drop-shadow(0 0 16px rgba(231, 149, 27, 0.6));
+    }
+
+    .room-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      fill: #ffffff;
+      text-anchor: middle;
+      pointer-events: none;
+      text-transform: uppercase;
+    }
+
+    .room-sublabel {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 8.5px;
+      font-weight: 500;
+      fill: var(--gold-champagne);
+      text-anchor: middle;
+      pointer-events: none;
+    }
+
+    /* Camera Walkthrough Elements */
+    .walkthrough-path {
+      stroke: var(--gold-primary);
+      stroke-width: 3;
+      stroke-dasharray: 6 6;
+      fill: none;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+      animation: dashMove 20s linear infinite;
+    }
+
+    @keyframes dashMove {
+      to {
+        stroke-dashoffset: -1000;
+      }
+    }
+
+    .camera-avatar {
+      filter: drop-shadow(0 0 12px rgba(231, 149, 27, 0.9));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .camera-cone {
+      fill: url(#cameraBeam);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .camera-waypoint {
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .camera-waypoint:hover circle.wp-outer {
+      transform: scale(1.3);
+      fill: var(--gold-primary);
+    }
+
+    /* === BOTTOM SCROLL SIMULATOR BAR === */
+    .scroll-sim-bar {
+      background: rgba(26, 17, 12, 0.92);
+      border-top: 1px solid var(--espresso-border);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .sim-play-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      border: none;
+      color: #120b08;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .sim-play-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 18px var(--gold-glow);
+    }
+
+    .slider-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .scroll-slider {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      background: #36251c;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .scroll-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gold-primary);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(231, 149, 27, 0.8);
+      border: 2px solid #fff;
+      transition: transform 0.15s ease;
+    }
+
+    .scroll-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .current-stop-badge {
+      background: #241610;
+      border: 1px solid var(--gold-champagne);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold-champagne);
+      white-space: nowrap;
+    }
+
+    /* === SIDEBAR INSPECTOR DRAWER === */
+    .sidebar-drawer {
+      background: #19100b;
+      border-left: 1px solid var(--espresso-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      z-index: 50;
+    }
+
+    .drawer-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--espresso-border);
+      position: relative;
+    }
+
+    .room-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-primary);
+      margin-bottom: 6px;
+    }
+
+    .drawer-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .capacity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(231, 149, 27, 0.15);
+      border: 1px solid rgba(231, 149, 27, 0.4);
+      color: var(--gold-primary);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* Drawer Media Preview */
+    .drawer-media {
+      position: relative;
+      height: 220px;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .drawer-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .drawer-media:hover img {
+      transform: scale(1.05);
+    }
+
+    .media-badge {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      background: rgba(18, 11, 8, 0.85);
+      backdrop-filter: blur(6px);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      color: var(--gold-champagne);
+      border: 1px solid rgba(181, 153, 118, 0.3);
+    }
+
+    /* Drawer Content Sections */
+    .drawer-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spec-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-champagne);
+    }
+
+    .spec-value {
+      font-size: 14px;
+      color: var(--alabaster);
+      line-height: 1.55;
+    }
+
+    .chips-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      background: #251812;
+      border: 1px solid #422d21;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #dfd7d2;
+    }
+
+    /* 3D Walkthrough Viewport Simulation Box */
+    .walkthrough-sim-box {
+      background: #140d0a;
+      border: 1px solid var(--espresso-border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .sim-box-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .camera-coords {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Confirm Action Footer */
+    .drawer-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--espresso-border);
+      background: #150d09;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      background: linear-gradient(135deg, #f5a623 0%, #d4820e 100%);
+      color: #120b08;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.04em;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 16px rgba(231, 149, 27, 0.35);
+    }
+
+    .confirm-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(231, 149, 27, 0.55);
+    }
+
+    .feedback-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Legend Overlay */
+    .legend-overlay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(22, 14, 10, 0.9);
+      border: 1px solid var(--espresso-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .legend-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-champagne);
+      margin-bottom: 2px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--alabaster);
+    }
+
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    /* Modal dialog for confirmation */
+    .confirm-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .confirm-modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1f140f;
+      border: 1px solid var(--gold-champagne);
+      border-radius: 16px;
+      max-width: 520px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+
+    .modal-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .modal-box p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Controls -->
+  <header>
+    <div class="brand-group">
+      <svg class="brand-icon" viewBox="0 0 160 260" fill="none">
+        <polygon points="96,25 142,25 142,235 96,250" fill="url(#hdrDoorGlow)" />
+        <polygon points="18,25 96,15 96,255 18,245" fill="#2B1B15" stroke="#150C09" stroke-width="2" />
+        <path d="M28,68 C28,40 50,30 86,26 L86,68 Z" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.9" />
+        <polygon points="26,76 52,73 52,143 26,145" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+        <polygon points="58,72 88,69 88,139 58,142" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+        <polygon points="26,155 52,153 52,230 26,233" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+        <polygon points="58,152 88,149 88,225 58,228" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+        <defs>
+          <linearGradient id="hdrDoorGlow" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFD074"/>
+            <stop offset="100%" stop-color="#E28308"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="brand-title">
+        <h1>Michael’s Back Door</h1>
+        <p>Architectural Floor Plan & 3D Walkthrough Preview</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <div class="level-toggle">
+        <button class="level-btn active" id="btn-lvl-1" onclick="switchLevel(1)">Ground Floor</button>
+        <button class="level-btn" id="btn-lvl-2" onclick="switchLevel(2)">Level 2 (Upstairs)</button>
+      </div>
+      <button class="mode-btn active" id="btn-walkthrough-mode" onclick="toggleWalkthroughMode()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        3D Walkthrough Mode
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Container -->
+  <div class="app-workspace">
+
+    <!-- Viewport Area -->
+    <div class="viewport-area">
+
+      <!-- Map Legend -->
+      <div class="legend-overlay">
+        <span class="legend-title">Room Zoning</span>
+        <div class="legend-item"><span class="legend-color" style="background:#2c4e3f;"></span> The Solarium (30-42)</div>
+        <div class="legend-item"><span class="legend-color" style="background:#5c242b;"></span> Main Dining Room (45-55)</div>
+        <div class="legend-item"><span class="legend-color" style="background:#4b3524;"></span> Private Wine Room (10-18)</div>
+        <div class="legend-item"><span class="legend-color" style="background:#704b2b;"></span> Main Bar & Lounge</div>
+        <div class="legend-item"><span class="legend-color" style="background:#8f6534;"></span> Lover's Lane (2-Tops)</div>
+        <div class="legend-item"><span class="legend-color" style="background:var(--gold-primary);"></span> 3D Camera Path</div>
+      </div>
+
+      <!-- Blueprint SVG Canvas -->
+      <div class="blueprint-container" id="blueprint-wrapper">
+
+        <!-- GROUND FLOOR SVG -->
+        <svg id="blueprint-svg" viewBox="0 0 1200 850" width="1200" height="850">
+          <defs>
+            <!-- Camera Light Field Gradient -->
+            <radialGradient id="cameraBeam" cx="50%" cy="100%" r="90%">
+              <stop offset="0%" stop-color="#F5A623" stop-opacity="0.8" />
+              <stop offset="40%" stop-color="#E7951B" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#D4820E" stop-opacity="0" />
+            </radialGradient>
+
+            <pattern id="solariumGlassPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+              <rect width="30" height="30" fill="#1b2f28" />
+              <path d="M 0,0 L 30,30 M 30,0 L 0,30" stroke="#2e5344" stroke-width="1" />
+            </pattern>
+
+            <pattern id="woodSlatPattern" width="8" height="20" patternUnits="userSpaceOnUse">
+              <rect width="8" height="20" fill="#2b1a11" />
+              <line x1="0" y1="0" x2="0" y2="20" stroke="#4a3122" stroke-width="2" />
+            </pattern>
+            
+            <pattern id="herringbonePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+              <rect width="20" height="20" fill="#20150e" />
+              <line x1="0" y1="0" x2="20" y2="20" stroke="#362318" stroke-width="1.2" />
+              <line x1="0" y1="20" x2="20" y2="0" stroke="#362318" stroke-width="1.2" />
+            </pattern>
+          </defs>
+
+          <!-- Outer Site Boundary / Clarkson Village Frontage & Rear Alley -->
+          <rect x="20" y="20" width="1160" height="810" fill="#160e0a" stroke="#38251a" stroke-width="2" rx="12" />
+
+          <!-- Street & Rear Alley Annotations -->
+          <text x="600" y="55" fill="#756254" font-size="13" font-weight="700" letter-spacing="0.25em" text-anchor="middle">LAKESHORE ROAD WEST (HISTORIC CLARKSON VILLAGE FRONTAGE)</text>
+          <line x1="50" y1="65" x2="1150" y2="65" stroke="#38251a" stroke-width="1.5" stroke-dasharray="8 6" />
+
+          <text x="600" y="815" fill="#e7951b" font-size="13" font-weight="700" letter-spacing="0.2em" text-anchor="middle">THE "BACK DOOR" REAR PARKING & ARRIVAL OFF CLARKSON ROAD NORTH</text>
+          <line x1="50" y1="795" x2="1150" y2="795" stroke="#4a3122" stroke-width="1.5" stroke-dasharray="8 6" />
+
+          <!-- GROUND FLOOR PLAN GROUP -->
+          <g id="ground-floor-plan">
+            
+            <!-- Floor Finish Bases -->
+            <!-- 1. The Solarium Room Area -->
+            <rect id="zone-solarium" class="room-zone" x="720" y="100" width="410" height="420" fill="url(#solariumGlassPattern)" stroke="#3f6e5a" stroke-width="2" rx="4" onclick="selectRoom('solarium')" />
+            
+            <!-- 2. Main Dining Room Area -->
+            <rect id="zone-main-dining" class="room-zone" x="290" y="100" width="410" height="420" fill="#3a181c" stroke="#691b24" stroke-width="2" rx="4" onclick="selectRoom('main-dining')" />
+
+            <!-- 3. The Wine Room -->
+            <rect id="zone-wine-room" class="room-zone" x="70" y="100" width="200" height="260" fill="#2d1c12" stroke="#5a3d28" stroke-width="2" rx="4" onclick="selectRoom('wine-room')" />
+
+            <!-- 4. Lover's Lane Romantic Alcove -->
+            <rect id="zone-lovers-lane" class="room-zone" x="70" y="380" width="200" height="140" fill="#3d2616" stroke="#7a4f2f" stroke-width="2" rx="4" onclick="selectRoom('lovers-lane')" />
+
+            <!-- 5. Main Bar & Lounge Area -->
+            <rect id="zone-bar" class="room-zone" x="290" y="540" width="410" height="220" fill="#291a12" stroke="#61412c" stroke-width="2" rx="4" onclick="selectRoom('bar')" />
+
+            <!-- 6. Host Foyer & Monogram Threshold -->
+            <rect id="zone-foyer" class="room-zone" x="720" y="540" width="230" height="220" fill="#241811" stroke="#4d3423" stroke-width="2" rx="4" onclick="selectRoom('foyer')" />
+
+            <!-- 7. Kitchen & Pass (Back of House) -->
+            <rect id="zone-kitchen" class="room-zone" x="70" y="540" width="200" height="220" fill="#1b1d20" stroke="#33373e" stroke-width="2" rx="4" onclick="selectRoom('kitchen')" />
+
+            <!-- 8. Staircase to Level 2 (Upstairs at Michael's) -->
+            <rect id="zone-stairs" class="room-zone" x="970" y="540" width="160" height="220" fill="#221813" stroke="#523927" stroke-width="2" rx="4" onclick="selectRoom('stairs')" />
+
+            <!-- ARCHITECTURAL WALLS & STRUCTURE -->
+            <!-- Main Outer Structural Walls -->
+            <rect x="60" y="90" width="1080" height="680" fill="none" stroke="#735541" stroke-width="5" rx="6" />
+
+            <!-- Interior Partition Walls -->
+            <!-- Horizontal main spine wall -->
+            <line x1="60" y1="530" x2="1140" y2="530" stroke="#735541" stroke-width="4" />
+            <!-- Openings in spine wall -->
+            <line x1="440" y1="530" x2="560" y2="530" stroke="#120b08" stroke-width="6" /> <!-- Bar to Dining opening -->
+            <line x1="770" y1="530" x2="870" y2="530" stroke="#120b08" stroke-width="6" /> <!-- Foyer to Solarium opening -->
+
+            <!-- Vertical dividing walls -->
+            <line x1="280" y1="90" x2="280" y2="760" stroke="#735541" stroke-width="4" />
+            <line x1="280" y1="210" x2="280" y2="280" stroke="#120b08" stroke-width="6" /> <!-- Wine room door -->
+            <line x1="280" y1="410" x2="280" y2="470" stroke="#120b08" stroke-width="6" /> <!-- Lover's lane door -->
+            <line x1="280" y1="620" x2="280" y2="680" stroke="#120b08" stroke-width="6" /> <!-- Kitchen pass opening -->
+
+            <line x1="710" y1="90" x2="710" y2="760" stroke="#735541" stroke-width="4" />
+            <line x1="710" y1="240" x2="710" y2="380" stroke="#120b08" stroke-width="6" /> <!-- Dining to Solarium archway -->
+            <line x1="710" y1="600" x2="710" y2="680" stroke="#120b08" stroke-width="6" /> <!-- Foyer to Bar entrance -->
+
+            <line x1="960" y1="530" x2="960" y2="760" stroke="#735541" stroke-width="4" />
+
+            <!-- The Iconic Secret Back Door Entrance Element -->
+            <g id="backdoor-entrance-mark" transform="translate(810, 755)">
+              <!-- Door frame threshold opening -->
+              <rect x="-35" y="-5" width="70" height="15" fill="#120b08" />
+              <!-- Swinging Door Leaf -->
+              <line x1="-30" y1="0" x2="-5" y2="35" stroke="#e7951b" stroke-width="4" />
+              <path d="M -5,35 A 40 40 0 0 1 30,0" fill="none" stroke="#e7951b" stroke-width="1.5" stroke-dasharray="3 3" />
+              <!-- Glowing lantern -->
+              <circle cx="36" cy="18" r="8" fill="#e7951b" opacity="0.8" />
+              <circle cx="36" cy="18" r="16" fill="url(#cameraBeam)" opacity="0.5" />
+              <text x="0" y="55" fill="#e7951b" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">SECRET "BACK DOOR" ENTRANCE</text>
+            </g>
+
+            <!-- Solarium Architectural Windows & French Doors -->
+            <!-- Atrium Skylight Grid indicator -->
+            <line x1="720" y1="100" x2="1130" y2="100" stroke="#7bb5d4" stroke-width="6" />
+            <line x1="1130" y1="100" x2="1130" y2="520" stroke="#7bb5d4" stroke-width="6" />
+            <!-- French Doors to Balcony -->
+            <g transform="translate(1130, 290)">
+              <line x1="0" y1="-30" x2="-25" y2="-5" stroke="#fff" stroke-width="3" />
+              <line x1="0" y1="30" x2="-25" y2="5" stroke="#fff" stroke-width="3" />
+              <text x="35" y="4" fill="#7bb5d4" font-size="10" font-weight="600" text-anchor="middle" transform="rotate(90, 35, 4)">FRENCH DOORS</text>
+            </g>
+
+            <!-- FURNITURE & FIXTURES DETAIL -->
+            <!-- 1. The Solarium Layout -->
+            <!-- Large banquet tables & rounds -->
+            <g id="solarium-tables">
+              <rect class="arch-table" x="770" y="160" width="140" height="60" rx="6" />
+              <rect class="arch-table" x="770" y="270" width="140" height="60" rx="6" />
+              <rect class="arch-table" x="770" y="380" width="140" height="60" rx="6" />
+              <circle class="arch-table" cx="1020" cy="200" r="42" />
+              <circle class="arch-table" cx="1020" cy="350" r="42" />
+              <!-- chairs around round table -->
+              <circle class="arch-chair" cx="1020" cy="145" r="9" />
+              <circle class="arch-chair" cx="1020" cy="255" r="9" />
+              <circle class="arch-chair" cx="965" cy="200" r="9" />
+              <circle class="arch-chair" cx="1075" cy="200" r="9" />
+            </g>
+
+            <!-- 2. Main Dining Room Layout -->
+            <g id="main-dining-tables">
+              <!-- Central 4-top tables -->
+              <rect class="arch-table" x="340" y="150" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="460" y="150" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="580" y="150" width="70" height="60" rx="4" />
+
+              <rect class="arch-table" x="340" y="270" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="460" y="270" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="580" y="270" width="70" height="60" rx="4" />
+
+              <rect class="arch-table" x="340" y="390" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="460" y="390" width="70" height="60" rx="4" />
+              <rect class="arch-table" x="580" y="390" width="70" height="60" rx="4" />
+            </g>
+
+            <!-- 3. The Wine Room Layout -->
+            <g id="wine-room-fixtures">
+              <!-- Perimeter wine racks -->
+              <rect x="75" y="105" width="190" height="18" fill="#442a1b" stroke="#734e35" stroke-width="1" />
+              <rect x="75" y="105" width="18" height="245" fill="#442a1b" stroke="#734e35" stroke-width="1" />
+              <rect x="247" y="105" width="18" height="245" fill="#442a1b" stroke="#734e35" stroke-width="1" />
+              <!-- Central Grand Tasting Table -->
+              <rect class="arch-table" x="120" y="160" width="100" height="130" rx="6" />
+              <!-- Tasting chairs -->
+              <circle class="arch-chair" cx="108" cy="180" r="7" />
+              <circle class="arch-chair" cx="108" cy="210" r="7" />
+              <circle class="arch-chair" cx="108" cy="240" r="7" />
+              <circle class="arch-chair" cx="108" cy="270" r="7" />
+              <circle class="arch-chair" cx="232" cy="180" r="7" />
+              <circle class="arch-chair" cx="232" cy="210" r="7" />
+              <circle class="arch-chair" cx="232" cy="240" r="7" />
+              <circle class="arch-chair" cx="232" cy="270" r="7" />
+            </g>
+
+            <!-- 4. Lover's Lane Layout -->
+            <g id="lovers-lane-fixtures">
+              <!-- 3 intimate 2-top banquettes with dividers -->
+              <rect class="arch-table" x="90" y="400" width="45" height="35" rx="3" />
+              <circle class="arch-chair" cx="80" cy="417" r="7" />
+              <circle class="arch-chair" cx="145" cy="417" r="7" />
+
+              <rect class="arch-table" x="90" y="470" width="45" height="35" rx="3" />
+              <circle class="arch-chair" cx="80" cy="487" r="7" />
+              <circle class="arch-chair" cx="145" cy="487" r="7" />
+
+              <rect class="arch-table" x="195" y="435" width="45" height="35" rx="3" />
+              <circle class="arch-chair" cx="185" cy="452" r="7" />
+              <circle class="arch-chair" cx="250" cy="452" r="7" />
+            </g>
+
+            <!-- 5. Main Bar & Lounge Layout -->
+            <g id="bar-fixtures">
+              <!-- Mahogany Bar Counter -->
+              <path d="M 330,580 L 610,580 A 25 25 0 0 1 635,605 L 635,690" fill="none" stroke="#8c5835" stroke-width="20" stroke-linecap="round" />
+              <!-- Bar Stools -->
+              <circle cx="360" cy="560" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="410" cy="560" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="460" cy="560" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="510" cy="560" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="560" cy="560" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="655" cy="630" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <circle cx="655" cy="670" r="8" fill="#1b120c" stroke="#b59976" stroke-width="1.5" />
+              <!-- Cocktail tables -->
+              <circle class="arch-table" cx="360" cy="690" r="22" />
+              <circle class="arch-table" cx="470" cy="690" r="22" />
+            </g>
+
+            <!-- 6. Foyer & Monogram Glass Wall -->
+            <g id="foyer-fixtures">
+              <!-- Frosted Glass Monogram Wall -->
+              <line x1="770" y1="590" x2="890" y2="590" stroke="#7bb5d4" stroke-width="4" stroke-dasharray="8 3" />
+              <text x="830" y="583" fill="#e7951b" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">"M B D" FROSTED GLASS</text>
+              <!-- Host Podium -->
+              <rect x="800" y="630" width="60" height="35" rx="3" fill="#3a251a" stroke="#b59976" stroke-width="1.5" />
+              <text x="830" y="652" fill="#fff" font-size="9" font-weight="600" text-anchor="middle">HOST STAND</text>
+            </g>
+
+            <!-- 7. Kitchen Hot Line & Pass -->
+            <g id="kitchen-fixtures">
+              <rect x="85" y="555" width="170" height="40" fill="#292c33" stroke="#505663" stroke-width="1.5" />
+              <rect x="85" y="640" width="170" height="50" fill="#292c33" stroke="#505663" stroke-width="1.5" />
+              <text x="170" y="668" fill="#8d94a5" font-size="10" font-weight="700" text-anchor="middle">CHEF'S PASS & PASTA LINE</text>
+            </g>
+
+            <!-- 8. Staircase to Level 2 Detail -->
+            <g id="stairs-fixtures">
+              <!-- Treads -->
+              <line x1="990" y1="560" x2="1110" y2="560" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="585" x2="1110" y2="585" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="610" x2="1110" y2="610" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="635" x2="1110" y2="635" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="660" x2="1110" y2="660" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="685" x2="1110" y2="685" stroke="#6b4c37" stroke-width="2" />
+              <line x1="990" y1="710" x2="1110" y2="710" stroke="#6b4c37" stroke-width="2" />
+              <text x="1050" y="740" fill="#e7951b" font-size="11" font-weight="700" letter-spacing="0.05em" text-anchor="middle">STAIRS TO LEVEL 2 ↑</text>
+            </g>
+
+            <!-- TEXT LABELS OVER ROOMS -->
+            <g id="room-labels-g">
+              <!-- Solarium -->
+              <text class="room-label" x="925" y="130">The Solarium</text>
+              <text class="room-sublabel" x="925" y="145">30–42 Guests • Skylight Roof & Balcony</text>
+
+              <!-- Main Dining Room -->
+              <text class="room-label" x="495" y="130">Main Dining Room</text>
+              <text class="room-sublabel" x="495" y="145">45–55 Guests • Heritage Burgundy & Sconces</text>
+
+              <!-- Wine Room -->
+              <text class="room-label" x="170" y="130">The Wine Room</text>
+              <text class="room-sublabel" x="170" y="145">10–18 Guests • Private Cellar</text>
+
+              <!-- Lover's Lane -->
+              <text class="room-label" x="170" y="398">Lover’s Lane</text>
+              <text class="room-sublabel" x="170" y="412">Intimate 2-Top Alcove</text>
+
+              <!-- Main Bar -->
+              <text class="room-label" x="495" y="735">Main Bar & Aperitivo Lounge</text>
+
+              <!-- Foyer -->
+              <text class="room-label" x="835" y="700">Host Foyer & Arrival</text>
+
+              <!-- Kitchen -->
+              <text class="room-label" x="170" y="725" fill="#8d94a5">Commercial Kitchen</text>
+            </g>
+
+            <!-- 3D WALKTHROUGH PATH & WAYPOINTS OVERLAY -->
+            <g id="walkthrough-layer">
+              <!-- SVG Path connecting Stop 1 through Stop 8 -->
+              <path id="camera-flight-path" class="walkthrough-path" d="
+                M 810,780 
+                L 810,650 
+                L 740,650 
+                L 500,650 
+                L 240,460 
+                L 490,320 
+                L 820,320 
+                L 170,220 
+                L 810,650 
+                L 1050,650
+              " />
+
+              <!-- Waypoints (Stops 1 to 8) -->
+              <!-- Stop 1: Back Door Arrival -->
+              <g class="camera-waypoint" transform="translate(810, 780)" onclick="goToStop(1)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">1</text>
+              </g>
+
+              <!-- Stop 2: Host Foyer & Monogram -->
+              <g class="camera-waypoint" transform="translate(810, 650)" onclick="goToStop(2)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">2</text>
+              </g>
+
+              <!-- Stop 3: Main Bar & Lounge -->
+              <g class="camera-waypoint" transform="translate(500, 650)" onclick="goToStop(3)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">3</text>
+              </g>
+
+              <!-- Stop 4: Lover's Lane Alcove -->
+              <g class="camera-waypoint" transform="translate(200, 450)" onclick="goToStop(4)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">4</text>
+              </g>
+
+              <!-- Stop 5: Main Dining Room -->
+              <g class="camera-waypoint" transform="translate(490, 320)" onclick="goToStop(5)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">5</text>
+              </g>
+
+              <!-- Stop 6: The Solarium -->
+              <g class="camera-waypoint" transform="translate(860, 320)" onclick="goToStop(6)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">6</text>
+              </g>
+
+              <!-- Stop 7: The Private Wine Room -->
+              <g class="camera-waypoint" transform="translate(170, 220)" onclick="goToStop(7)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">7</text>
+              </g>
+
+              <!-- Stop 8: Stairs to Level 2 -->
+              <g class="camera-waypoint" transform="translate(1050, 650)" onclick="goToStop(8)">
+                <circle class="wp-outer" r="16" fill="rgba(231,149,27,0.3)" stroke="#e7951b" stroke-width="2" />
+                <circle r="7" fill="#e7951b" />
+                <text y="4" fill="#120b08" font-size="10" font-weight="800" text-anchor="middle">8</text>
+              </g>
+
+              <!-- Dynamic 3D Camera / Avatar Object -->
+              <g id="camera-avatar" class="camera-avatar" transform="translate(810, 780) rotate(0)">
+                <!-- Light Cone / Camera Vision Cone -->
+                <polygon class="camera-cone" points="-30,-80 30,-80 0,-5" />
+                <!-- Camera Body -->
+                <circle r="14" fill="#120b08" stroke="#f5a623" stroke-width="3" />
+                <circle r="5" fill="#f5a623" />
+                <path d="M -4,-18 L 4,-18 L 0,-24 Z" fill="#f5a623" />
+              </g>
+            </g>
+          </g>
+
+          <!-- LEVEL 2 (UPSTAIRS AT MICHAEL'S) PLAN GROUP (Hidden by default) -->
+          <g id="level-2-plan" style="display:none;">
+            <!-- Level 2 Floor Outline -->
+            <rect x="250" y="100" width="880" height="660" fill="#17191d" stroke="#523927" stroke-width="4" rx="8" />
+
+            <!-- Room Zones on Level 2 -->
+            <!-- 1. The Slatted Wood Event Salon & Dining -->
+            <rect id="zone-upstairs-salon" class="room-zone" x="270" y="120" width="560" height="620" fill="url(#woodSlatPattern)" stroke="#7d5a3c" stroke-width="2" rx="4" onclick="selectRoom('upstairs-salon')" />
+
+            <!-- 2. Private Bar & Lounge Zone -->
+            <rect id="zone-upstairs-bar" class="room-zone" x="850" y="120" width="260" height="340" fill="#202227" stroke="#4a505b" stroke-width="2" rx="4" onclick="selectRoom('upstairs-bar')" />
+
+            <!-- 3. Staircase Arrival & Private Restrooms -->
+            <rect id="zone-upstairs-stairs" class="room-zone" x="850" y="480" width="260" height="260" fill="#251b14" stroke="#5e3e29" stroke-width="2" rx="4" onclick="selectRoom('upstairs-stairs')" />
+
+            <!-- Level 2 Interior Features -->
+            <!-- Slatted Acoustic Timber Feature Wall -->
+            <line x1="280" y1="130" x2="820" y2="130" stroke="#b59976" stroke-width="6" />
+            <text x="550" y="155" fill="#b59976" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">VERTICAL SLATTED ACOUSTIC TIMBER WALL</text>
+
+            <!-- Large Formal Dining Tables & Leather Banquettes -->
+            <rect class="arch-table" x="320" y="240" width="220" height="75" rx="6" />
+            <rect class="arch-table" x="320" y="380" width="220" height="75" rx="6" />
+            <rect class="arch-table" x="320" y="520" width="220" height="75" rx="6" />
+
+            <circle class="arch-table" cx="680" cy="280" r="50" />
+            <circle class="arch-table" cx="680" cy="480" r="50" />
+
+            <!-- Fluted Black Private Bar -->
+            <path d="M 880,180 L 1050,180 A 20 20 0 0 1 1070,200 L 1070,280" fill="none" stroke="#2a2e36" stroke-width="22" stroke-linecap="round" />
+            <circle cx="910" cy="155" r="8" fill="#120b08" stroke="#b59976" stroke-width="1.5" />
+            <circle cx="960" cy="155" r="8" fill="#120b08" stroke="#b59976" stroke-width="1.5" />
+            <circle cx="1010" cy="155" r="8" fill="#120b08" stroke="#b59976" stroke-width="1.5" />
+
+            <!-- Upper Staircase Landing -->
+            <text x="980" y="550" fill="#e7951b" font-size="12" font-weight="700" text-anchor="middle">STAIRCASE LANDING</text>
+            <text x="980" y="650" fill="#a0aab8" font-size="11" font-weight="600" text-anchor="middle">PRIVATE RESTROOMS</text>
+
+            <!-- Labels for Level 2 -->
+            <text class="room-label" x="550" y="200" font-size="16">Upstairs at Michael's</text>
+            <text class="room-sublabel" x="550" y="220">20–42 Seated Guests (Up to 50 Reception) • Modern Lounge & Private Bar</text>
+            <text class="room-label" x="980" y="340">Private Cocktail Bar</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- Bottom Walkthrough Scroll Simulator Control Bar -->
+      <div class="scroll-sim-bar">
+        <button class="sim-play-btn" id="play-btn" onclick="togglePlayWalkthrough()">
+          ▶
+        </button>
+        <div class="slider-group">
+          <div class="slider-labels">
+            <span>Scroll Journey: Stop <strong id="lbl-stop-num" style="color:var(--gold-primary);">1</strong> of 8</span>
+            <span id="lbl-scroll-pct">0% Scrolled</span>
+          </div>
+          <input type="range" class="scroll-slider" id="walkthrough-slider" min="0" max="100" value="0" oninput="onScrollSlider(this.value)">
+        </div>
+        <div class="current-stop-badge" id="lbl-current-stop">
+          1. The Secret Back Door Arrival
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar Drawer (Room Details & 3D Camera Inspector) -->
+    <div class="sidebar-drawer">
+      <div class="drawer-header">
+        <div class="room-kicker" id="d-kicker">STOP 1 OF 8 • ARRIVAL</div>
+        <h2 id="d-title">The Secret Back Door</h2>
+        <div class="capacity-badge" id="d-capacity">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span id="d-cap-text">Arrival & Speakeasy Entrance</span>
+        </div>
+      </div>
+
+      <div class="drawer-media">
+        <img id="d-img" src="assets/logos/michaels-back-door-logo-glowing-gold.png" alt="Room preview">
+        <span class="media-badge" id="d-img-tag">Original Asset Preview</span>
+      </div>
+
+      <div class="drawer-body">
+        <div class="spec-block">
+          <span class="spec-label">Atmosphere & Architecture</span>
+          <p class="spec-value" id="d-atmosphere">
+            A quiet alleyway off Clarkson Road North leads to the restaurant's iconic rear entrance. An amber lantern glows over the dark walnut door, creating an intimate speakeasy arrival experience that has welcomed guests since 1981.
+          </p>
+        </div>
+
+        <div class="spec-block">
+          <span class="spec-label">Material & Sensory Palette</span>
+          <div class="chips-group" id="d-chips">
+            <span class="chip">Aged Walnut Timber</span>
+            <span class="chip">Warm Amber Lantern</span>
+            <span class="chip">Heritage Fanlight Transom</span>
+            <span class="chip">Polished Brass Hardware</span>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <span class="spec-label">3D Walkthrough Camera Coordinates</span>
+          <div class="walkthrough-sim-box">
+            <div class="sim-box-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              Scroll Camera Rig Specs
+            </div>
+            <div class="camera-coords" id="d-camera-specs">
+              Position: [X: 810, Y: 780, Z: 1.6m]<br>
+              LookAt: [X: 810, Y: 650, Z: 1.2m]<br>
+              Focal Length: 28mm Wide Cinema<br>
+              Lighting: Amber Sunset Glow (#F5A623)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <button class="confirm-btn" onclick="openConfirmModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Confirm Floor Plan Layout
+        </button>
+        <p class="feedback-note">Confirming this blueprint allows us to build the scroll-driven 3D architectural engine.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal Dialog -->
+  <div class="confirm-modal" id="confirm-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeConfirmModal()">✕</button>
+      <h3>Confirm Restaurant Floor Plan</h3>
+      <p>
+        You are confirming the architectural floor plan and 8-stop scroll sequence for Michael's Back Door Restaurant:
+      </p>
+      <ul style="margin-left: 20px; font-size: 13.5px; color: #ddd; line-height: 1.8; margin-bottom: 20px;">
+        <li><strong>Ground Floor:</strong> Secret Back Door, Foyer (MBD Frosted Glass), Main Bar & Lounge, Lover's Lane (2-Tops), Main Dining Room (Burgundy walls), The Solarium (30–42 guests), The Wine Room (10–18 guests).</li>
+        <li><strong>Level 2:</strong> Upstairs at Michael's (20–42 guests, acoustic slatted wood walls, private fluted bar).</li>
+        <li><strong>Walkthrough Journey:</strong> 8 seamless camera waypoints triggered continuously via user scroll.</li>
+      </ul>
+      <button class="confirm-btn" style="width: 100%;" onclick="submitConfirmation()">
+        Confirm Layout & Proceed to 3D Space Build
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ROOM DATA & STOPS CATALOG
+    const rooms = {
+      'backdoor': {
+        kicker: 'STOP 1 OF 8 • ARRIVAL',
+        title: 'The Secret Back Door',
+        capacity: 'Arrival & Speakeasy Entrance',
+        img: 'assets/logos/michaels-back-door-logo-glowing-gold.png',
+        atmosphere: "A quiet rear alleyway off Clarkson Road North leads to the restaurant's iconic hidden entrance. An amber lantern glows over the dark walnut door, creating an intimate speakeasy arrival experience that has welcomed guests since 1981.",
+        chips: ['Aged Walnut Door', 'Warm Amber Lantern', 'Fanlight Transom', 'Brass Hardware'],
+        camera: 'Position: [X: 810, Y: 780, Z: 1.6m]\nLookAt: [X: 810, Y: 650, Z: 1.2m]\nFocal Length: 28mm Wide Cinema\nLighting: Amber Sunset Glow (#F5A623)',
+        svgZoneId: null,
+        waypointPos: { x: 810, y: 780, rot: 0 }
+      },
+      'foyer': {
+        kicker: 'STOP 2 OF 8 • THRESHOLD',
+        title: 'Host Foyer & Glass Monogram',
+        capacity: 'Welcoming & Host Check-in',
+        img: 'assets/logos/michaels-back-door-monogram-frosted-glass.jpg',
+        atmosphere: 'Passing through the back door, guests enter a warm candlelit vestibule anchored by vertical frosted glass panels etched with the classic "M B D" monogram, through which golden restaurant candlelight shimmers.',
+        chips: ['M B D Glass Etching', 'Host Podium', 'Warm Bokeh Candlelight', 'Soft Italian Jazz'],
+        camera: 'Position: [X: 810, Y: 650, Z: 1.6m]\nLookAt: [X: 680, Y: 650, Z: 1.3m]\nFocal Length: 35mm Prime\nLighting: Golden Bokeh & Glass Caustics',
+        svgZoneId: 'zone-foyer',
+        waypointPos: { x: 810, y: 650, rot: -45 }
+      },
+      'bar': {
+        kicker: 'STOP 3 OF 8 • APERITIVO',
+        title: 'Main Bar & Cocktail Lounge',
+        capacity: '12 Bar Stools + 16 Lounge Seats',
+        img: 'assets/interior_and_ambience/bar-bottles-campari-blown-glass-pendants.jpg',
+        atmosphere: 'The social heartbeat of the restaurant. Handcrafted polished mahogany counter, amber blown-glass pendant lights, and a glowing back-bar stocked with vintage Campari, Aperol, and premium Italian amari.',
+        chips: ['Blown Glass Pendants', 'Campari Display', 'Mahogany Counter', 'Italian Amari'],
+        camera: 'Position: [X: 500, Y: 650, Z: 1.6m]\nLookAt: [X: 500, Y: 580, Z: 1.4m]\nFocal Length: 32mm Cinema\nLighting: Warm Amber Glow (2700K)',
+        svgZoneId: 'zone-bar',
+        waypointPos: { x: 500, y: 650, rot: 0 }
+      },
+      'lovers-lane': {
+        kicker: 'STOP 4 OF 8 • ROMANTIC ALCOVE',
+        title: 'Lover’s Lane',
+        capacity: '3 Private 2-Top Tables (6 Guests Total)',
+        img: 'assets/interior_and_ambience/table-setting-olive-oil-wine-glasses.jpg',
+        atmosphere: 'The most requested date-night spot in Mississauga. A quiet, secluded alcove with dim candlelight, velvet pillows, and intimate corner seating tailored for anniversaries, proposals, and romantic evenings.',
+        chips: ['Secluded Alcove', 'Candlelit 2-Tops', 'Linen Napkins', 'Crystal Stemware'],
+        camera: 'Position: [X: 200, Y: 450, Z: 1.4m]\nLookAt: [X: 110, Y: 435, Z: 1.1m]\nFocal Length: 45mm Portrait Depth\nLighting: Low-Key Candlelight (2200K)',
+        svgZoneId: 'zone-lovers-lane',
+        waypointPos: { x: 200, y: 450, rot: -90 }
+      },
+      'main-dining': {
+        kicker: 'STOP 5 OF 8 • HERITAGE SALON',
+        title: 'The Main Dining Room',
+        capacity: '45 to 55 Seated Guests',
+        img: 'assets/interior_and_ambience/main-dining-room-burgundy-sconces.jpg',
+        atmosphere: 'Classic 1981 European fine dining grandeur. Deep burgundy walls adorned with Italian oil paintings, warm brass wall sconces, crisp white double-draped tablecloths, and polished oak herringbone parquet flooring.',
+        chips: ['Burgundy Walls', 'Brass Wall Sconces', 'Herringbone Wood', 'Fine Linens'],
+        camera: 'Position: [X: 490, Y: 320, Z: 1.6m]\nLookAt: [X: 490, Y: 180, Z: 1.3m]\nFocal Length: 24mm Ultra-Wide\nLighting: Classic Brass Sconces & Chandeliers',
+        svgZoneId: 'zone-main-dining',
+        waypointPos: { x: 490, y: 320, rot: 0 }
+      },
+      'solarium': {
+        kicker: 'STOP 6 OF 8 • SUNLIT ATRIUM',
+        title: 'The Solarium',
+        capacity: '30 to 42 Guests Private (16–22 Semi-Private)',
+        img: 'assets/interior_and_ambience/solarium-dining-room-sunlight.jpg',
+        atmosphere: 'A luminous, glass-enclosed atrium garden room. Glass skylight ceiling flooding the room with sunlight by day and starlight by night, with double French doors opening to an iron Juliet balcony overlooking Clarkson greenery.',
+        chips: ['Glass Atrium Skylight', 'French Balcony Doors', 'Daylight to Starlight', 'Private Buyout'],
+        camera: 'Position: [X: 860, Y: 320, Z: 1.7m]\nLookAt: [X: 1020, Y: 260, Z: 1.4m]\nFocal Length: 28mm Panoramic\nLighting: Volumetric Natural Daylight / Starlight',
+        svgZoneId: 'zone-solarium',
+        waypointPos: { x: 860, y: 320, rot: 45 }
+      },
+      'wine-room': {
+        kicker: 'STOP 7 OF 8 • SOMMELIER CELLAR',
+        title: 'The Private Wine Room',
+        capacity: '10 to 18 Seated Guests',
+        img: 'assets/interior_and_ambience/wine-room-private-dining-table.jpg',
+        atmosphere: 'An exclusive, sommelier-curated private dining chamber lined floor-to-ceiling with custom dark wood racks holding 150+ international and Italian vintages (Caymus, Gaja, Antinori, Barolo). A solid walnut table anchors the room.',
+        chips: ['150+ Cellar Vintages', 'Solid Walnut Table', 'Dedicated Sommelier', 'VIP Privacy'],
+        camera: 'Position: [X: 170, Y: 220, Z: 1.5m]\nLookAt: [X: 170, Y: 150, Z: 1.2m]\nFocal Length: 35mm Intimate\nLighting: Warm Cellar Downlights (2400K)',
+        svgZoneId: 'zone-wine-room',
+        waypointPos: { x: 170, y: 220, rot: 0 }
+      },
+      'stairs': {
+        kicker: 'STOP 8 OF 8 • LEVEL 2 ASCENT',
+        title: 'Upstairs at Michael’s',
+        capacity: '20 to 42 Seated Guests (Up to 50 Reception)',
+        img: 'assets/interior_and_ambience/upstairs-at-michaels-wood-slat-lounge.jpg',
+        atmosphere: 'Ascend the private staircase to Level 2: a newly renovated contemporary event salon. Modern vertical slatted acoustic oak/walnut timber walls, fluted matte black bar with marble counter, brushed brass bird lamps, and private restrooms.',
+        chips: ['Acoustic Wood Slats', 'Fluted Black Bar', 'Brushed Brass Lamps', 'Level 2 Buyout'],
+        camera: 'Position: [X: 1050, Y: 650, Z: 2.8m]\nLookAt: [X: 550, Y: 350, Z: 2.5m]\nFocal Length: 30mm Architecture\nLighting: Architectural Linear & Brass Accents',
+        svgZoneId: 'zone-stairs',
+        waypointPos: { x: 1050, y: 650, rot: -120 }
+      },
+      'kitchen': {
+        kicker: 'BACK OF HOUSE • CULINARY',
+        title: 'Commercial Kitchen & Pass',
+        capacity: 'Chef Mark D’Souza & Culinary Team',
+        img: 'assets/culinary_and_dishes/capelli-dangeli-lobster-angel-hair-wide.jpg',
+        atmosphere: 'The high-energy culinary pass where Executive Chef Mark D’Souza flambés and plates the famous Capelli D’Angeli lobster pasta, Linguine Pescatore, and tender veal tenderloins.',
+        chips: ['Chef Mark D’Souza', 'Scratch Pasta Line', 'Lobster Flambé', 'Fresh Pastry Station'],
+        camera: 'Position: [X: 170, Y: 640, Z: 1.5m]\nLookAt: [X: 170, Y: 570, Z: 1.3m]\nFocal Length: 35mm Action\nLighting: Clean Kitchen Task Lighting',
+        svgZoneId: 'zone-kitchen',
+        waypointPos: { x: 170, y: 640, rot: 0 }
+      },
+      'upstairs-salon': {
+        kicker: 'LEVEL 2 • PRIVATE SALON',
+        title: 'Upstairs at Michael’s Salon',
+        capacity: '20 to 42 Seated Guests',
+        img: 'assets/interior_and_ambience/dining-table-wood-slat-feature-wall.jpg',
+        atmosphere: 'The primary dining and presentation salon of Level 2. Acoustic timber slats create superb acoustics for corporate presentations, speeches, and intimate acoustic music.',
+        chips: ['Private Level 2', 'Acoustic Wall Panels', 'Leather Dining Chairs', 'Custom Menus'],
+        camera: 'Position: [X: 550, Y: 450, Z: 2.8m]\nLookAt: [X: 350, Y: 350, Z: 2.5m]\nFocal Length: 28mm\nLighting: Ambient Slat Backlights',
+        svgZoneId: 'zone-upstairs-salon',
+        waypointPos: { x: 550, y: 450, rot: -90 }
+      },
+      'upstairs-bar': {
+        kicker: 'LEVEL 2 • PRIVATE BAR',
+        title: 'Upstairs Private Bar',
+        capacity: 'Cocktails & Passed Canapés',
+        img: 'assets/interior_and_ambience/interior-decor-olive-branches-brass-lamp.jpg',
+        atmosphere: 'Dedicated bar exclusively for Level 2 private events. Allows private cocktail receptions before guests take their seats.',
+        chips: ['Private Bartender', 'Cocktail Lounge', 'Fluted Bar Facade', 'Brushed Brass'],
+        camera: 'Position: [X: 980, Y: 300, Z: 2.8m]\nLookAt: [X: 980, Y: 200, Z: 2.5m]\nFocal Length: 35mm\nLighting: Soft Brass Glow',
+        svgZoneId: 'zone-upstairs-bar',
+        waypointPos: { x: 980, y: 300, rot: 0 }
+      },
+      'upstairs-stairs': {
+        kicker: 'LEVEL 2 • LANDING & AMENITIES',
+        title: 'Upper Landing & Private Restrooms',
+        capacity: 'Level 2 Private Circulation',
+        img: 'assets/interior_and_ambience/upstairs-at-michaels-wood-slat-lounge.jpg',
+        atmosphere: 'The upper staircase arrival landing features dedicated private executive restrooms exclusively for Level 2 events, ensuring total separation and discretion from the ground floor dining rooms.',
+        chips: ['Private Level 2 Restrooms', 'Dedicated Staircase', 'Executive Privacy', 'Guest Coat Room'],
+        camera: 'Position: [X: 980, Y: 580, Z: 2.8m]\nLookAt: [X: 980, Y: 450, Z: 2.5m]\nFocal Length: 28mm\nLighting: Soft Dimmable Recessed LED',
+        svgZoneId: 'zone-upstairs-stairs',
+        waypointPos: { x: 980, y: 580, rot: 0 }
+      }
+    };
+
+    const stopOrder = ['backdoor', 'foyer', 'bar', 'lovers-lane', 'main-dining', 'solarium', 'wine-room', 'stairs'];
+    let currentStopIndex = 0;
+    let isPlaying = false;
+    let playInterval = null;
+
+    // SELECT ROOM
+    function selectRoom(key) {
+      const data = rooms[key];
+      if (!data) return;
+
+      // Update Zone selection highlight
+      document.querySelectorAll('.room-zone').forEach(el => el.classList.remove('selected'));
+      if (data.svgZoneId) {
+        const el = document.getElementById(data.svgZoneId);
+        if (el) el.classList.add('selected');
+      }
+
+      // Update Drawer
+      document.getElementById('d-kicker').innerText = data.kicker;
+      document.getElementById('d-title').innerText = data.title;
+      document.getElementById('d-cap-text').innerText = data.capacity;
+      document.getElementById('d-img').src = data.img;
+      document.getElementById('d-atmosphere').innerText = data.atmosphere;
+      document.getElementById('d-camera-specs').innerText = data.camera;
+
+      // Chips
+      const chipsContainer = document.getElementById('d-chips');
+      chipsContainer.innerHTML = '';
+      data.chips.forEach(c => {
+        const span = document.createElement('span');
+        span.className = 'chip';
+        span.innerText = c;
+        chipsContainer.appendChild(span);
+      });
+
+      // Move Camera avatar to waypoint if on ground floor
+      if (data.waypointPos && document.getElementById('ground-floor-plan').style.display !== 'none') {
+        moveCameraAvatar(data.waypointPos.x, data.waypointPos.y, data.waypointPos.rot);
+      }
+    }
+
+    // MOVE CAMERA AVATAR
+    function moveCameraAvatar(x, y, rot) {
+      const avatar = document.getElementById('camera-avatar');
+      if (avatar) {
+        avatar.setAttribute('transform', `translate(${x}, ${y}) rotate(${rot})`);
+      }
+    }
+
+    // GO TO STOP (1 to 8)
+    function goToStop(stopNum) {
+      currentStopIndex = stopNum - 1;
+      const key = stopOrder[currentStopIndex];
+      const pct = Math.round((currentStopIndex / 7) * 100);
+
+      // Update Slider & Badges
+      document.getElementById('walkthrough-slider').value = pct;
+      document.getElementById('lbl-stop-num').innerText = stopNum;
+      document.getElementById('lbl-scroll-pct').innerText = pct + '% Scrolled';
+      document.getElementById('lbl-current-stop').innerText = `${stopNum}. ${rooms[key].title}`;
+
+      // If stop 8 (Stairs), switch to upstairs or show transition
+      if (stopNum === 8) {
+        switchLevel(1); // keep on ground floor stairs first
+      } else {
+        switchLevel(1);
+      }
+
+      selectRoom(key);
+    }
+
+    // ON SLIDER DRAGGED
+    function onScrollSlider(val) {
+      const pct = parseInt(val);
+      // Map 0-100% to 0-7 indices
+      const idx = Math.min(7, Math.floor((pct / 100) * 8));
+      if (idx !== currentStopIndex) {
+        goToStop(idx + 1);
+      } else {
+        document.getElementById('lbl-scroll-pct').innerText = pct + '% Scrolled';
+      }
+    }
+
+    // TOGGLE PLAY WALKTHROUGH
+    function togglePlayWalkthrough() {
+      const btn = document.getElementById('play-btn');
+      if (isPlaying) {
+        clearInterval(playInterval);
+        isPlaying = false;
+        btn.innerText = '▶';
+      } else {
+        isPlaying = true;
+        btn.innerText = '❚❚';
+        playInterval = setInterval(() => {
+          let nextIdx = (currentStopIndex + 1) % 8;
+          goToStop(nextIdx + 1);
+          if (nextIdx === 0 && isPlaying) {
+            // looped once
+          }
+        }, 3200);
+      }
+    }
+
+    // LEVEL SWITCHER
+    function switchLevel(lvl) {
+      const gFloor = document.getElementById('ground-floor-plan');
+      const lvl2 = document.getElementById('level-2-plan');
+      const btn1 = document.getElementById('btn-lvl-1');
+      const btn2 = document.getElementById('btn-lvl-2');
+
+      if (lvl === 1) {
+        gFloor.style.display = 'inline';
+        lvl2.style.display = 'none';
+        btn1.classList.add('active');
+        btn2.classList.remove('active');
+      } else {
+        gFloor.style.display = 'none';
+        lvl2.style.display = 'inline';
+        btn2.classList.add('active');
+        btn1.classList.remove('active');
+        selectRoom('upstairs-salon');
+      }
+    }
+
+    // TOGGLE WALKTHROUGH MODE
+    function toggleWalkthroughMode() {
+      const layer = document.getElementById('walkthrough-layer');
+      const btn = document.getElementById('btn-walkthrough-mode');
+      if (layer.style.display === 'none') {
+        layer.style.display = 'inline';
+        btn.classList.add('active');
+      } else {
+        layer.style.display = 'none';
+        btn.classList.remove('active');
+      }
+    }
+
+    // MODAL
+    function openConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('open');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.remove('open');
+    }
+
+    function submitConfirmation() {
+      closeConfirmModal();
+      alert('Floor Plan and 3D Walkthrough Sequence successfully confirmed! Ready to build the 3D scroll-driven space.');
+    }
+
+    // Initialize at Stop 1
+    goToStop(1);
+  </script>
+</body>
+</html>

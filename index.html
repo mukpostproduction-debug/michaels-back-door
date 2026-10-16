@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael’s Back Door Restaurant — Fine Italian Dining & 3D Interactive Walkthrough | Mississauga</title>
+  <meta name="description" content="Experience 44 years of authentic Italian fine dining in Clarkson Village, Mississauga. Explore our interactive 3D scroll-driven restaurant walkthrough, seasonal dinner menus, private wine cellar, and the iconic secret back door entrance.">
+  <meta name="keywords" content="Michaels Back Door, Italian restaurant Mississauga, Clarkson Village dining, fine dining Mississauga, Capelli D'Angeli, private event venue, Solarium Mississauga, wine cellar dining">
+  <link rel="canonical" href="https://www.michaelsbackdoor.com/">
+  
+  <!-- Favicon / Brand Door Icon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logos/michaels-back-door-door-mark.svg">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-notice-bar">
+    <div class="notice-inner">
+      <div class="notice-left">
+        <span class="notice-badge">Clarkson Village</span>
+        <span>1715 Lakeshore Rd W, Mississauga, ON • Tel: <a href="tel:9058225751" class="notice-link">905-822-5751</a></span>
+      </div>
+      <div class="notice-right">
+        <span>Hours: Tue–Sun from 5:00 PM</span>
+        <span style="opacity: 0.4;">|</span>
+        <a href="#visit" class="notice-link trigger-directions-modal">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Enter via Clarkson Rd N Back Alley
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Luxury Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-anchor">
+        <svg class="brand-icon-svg" viewBox="0 0 160 260" fill="none">
+          <polygon points="96,25 142,25 142,235 96,250" fill="url(#navDoorGlow)" />
+          <polygon points="18,25 96,15 96,255 18,245" fill="#2B1B15" stroke="#150C09" stroke-width="2" />
+          <path d="M28,68 C28,40 50,30 86,26 L86,68 Z" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.9" />
+          <polygon points="26,76 52,73 52,143 26,145" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+          <polygon points="58,72 88,69 88,139 58,142" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+          <polygon points="26,155 52,153 52,230 26,233" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+          <polygon points="58,152 88,149 88,225 58,228" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.85" />
+          <defs>
+            <linearGradient id="navDoorGlow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFD074"/>
+              <stop offset="100%" stop-color="#E28308"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="brand-title-wrap">
+          <h1>Michael’s Back Door</h1>
+          <span>Italian Restaurant • Est. 1981</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="main-nav">
+        <a href="#walkthrough-section" class="nav-link">The 3D Walkthrough</a>
+        <a href="#menus" class="nav-link">Menus</a>
+        <a href="#events" class="nav-link">Private Dining</a>
+        <a href="#story" class="nav-link">Our Story</a>
+        <a href="#giftcards" class="nav-link">Gift Cards</a>
+        <a href="#visit" class="nav-link">Location & Hours</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="ambiance-btn" id="audio-ambiance-toggle" title="Toggle warm Italian dining ambiance audio">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          Ambiance: OFF
+        </button>
+        <a href="#reservation" class="btn btn-gold trigger-reservation-modal">Book a Table</a>
+        <button class="mobile-toggle-btn" id="mobile-burger-btn" aria-label="Open Navigation Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <div class="brand-title-wrap">
+        <h2 style="font-family: var(--font-serif); font-size: 24px; color: #fff;">Michael’s Back Door</h2>
+        <span style="font-size: 11px; color: var(--gold-champagne);">Mississauga, ON</span>
+      </div>
+      <button class="modal-close-btn" id="mobile-nav-close">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="#walkthrough-section" class="mobile-link">The 3D Walkthrough</a>
+      <a href="#menus" class="mobile-link">Menus & Vintages</a>
+      <a href="#events" class="mobile-link">Private Dining & Events</a>
+      <a href="#story" class="mobile-link">Our 44-Year Heritage</a>
+      <a href="#giftcards" class="mobile-link">Gift Cards</a>
+      <a href="#visit" class="mobile-link">Directions to Back Door</a>
+      <a href="#reservation" class="btn btn-gold trigger-reservation-modal" style="margin-top: 20px;">Book a Table</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-texture"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-badge-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Celebrating 44 Years of Culinary Distinction • Since 1981
+      </div>
+      <h1 class="hero-title">
+        Mississauga’s Hidden Jewel<br>
+        <em>Enter Through The Back Door</em>
+      </h1>
+      <p class="hero-desc">
+        For over four decades, tucked behind historic Clarkson Road North, Michael’s Back Door has welcomed guests to an intimate world of scratch pasta, prime veal, and sommelier-curated rare vintages.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#walkthrough-section" class="btn btn-gold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Begin 3D Scroll Walkthrough
+        </a>
+        <button class="btn btn-outline-gold trigger-reservation-modal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Reserve a Table
+        </button>
+      </div>
+    </div>
+
+    <!-- Mouse Scroll Indicator -->
+    <a href="#walkthrough-section" class="hero-scroll-indicator">
+      <div class="mouse-scroll-icon">
+        <div class="mouse-wheel"></div>
+      </div>
+      <span>Scroll to Walk Inside</span>
+    </a>
+  </section>
+
+  <!-- ==========================================================================
+       THE 3D SCROLL WALKTHROUGH ENGINE
+       ========================================================================== -->
+  <section id="walkthrough-section">
+    <div class="walkthrough-sticky-viewport">
+      <div class="walkthrough-scene" id="walkthrough-scene">
+        <!-- Dual background layers for smooth crossfade -->
+        <img id="walkthrough-bg-active" class="walkthrough-bg-layer" src="assets/interior_and_ambience/main-dining-room-burgundy-sconces.jpg" alt="Restaurant Interior View">
+        <img id="walkthrough-bg-incoming" class="walkthrough-bg-layer" src="assets/logos/michaels-back-door-monogram-frosted-glass.jpg" alt="Incoming View">
+        <div class="walkthrough-ambient-lighting"></div>
+      </div>
+
+      <!-- Architectural HUD Mini-Map Compass -->
+      <div class="hud-minimap-container">
+        <div class="hud-map-header">
+          <span class="hud-map-title">Architectural Compass</span>
+          <span class="hud-level-badge" id="hud-level-badge">GROUND FLOOR</span>
+        </div>
+        <svg id="hud-map-svg" viewBox="0 0 1200 850">
+          <rect width="1200" height="850" fill="#150d09" rx="8" />
+          
+          <!-- Ground Floor HUD Outline -->
+          <g id="hud-ground-floor">
+            <!-- Solarium -->
+            <rect class="hud-room-trigger" data-stop-id="solarium" x="720" y="100" width="410" height="420" fill="#2c4e3f" stroke="#3f6e5a" stroke-width="2" />
+            <!-- Main Dining -->
+            <rect class="hud-room-trigger" data-stop-id="main-dining" x="290" y="100" width="410" height="420" fill="#5c242b" stroke="#7a343d" stroke-width="2" />
+            <!-- Wine Room -->
+            <rect class="hud-room-trigger" data-stop-id="wine-room" x="70" y="100" width="200" height="260" fill="#4b3524" stroke="#6b4c34" stroke-width="2" />
+            <!-- Lover's Lane -->
+            <rect class="hud-room-trigger" data-stop-id="lovers-lane" x="70" y="380" width="200" height="140" fill="#8f6534" stroke="#ab7b42" stroke-width="2" />
+            <!-- Bar -->
+            <rect class="hud-room-trigger" data-stop-id="bar" x="290" y="540" width="410" height="220" fill="#704b2b" stroke="#8c5f38" stroke-width="2" />
+            <!-- Foyer -->
+            <rect class="hud-room-trigger" data-stop-id="foyer" x="720" y="540" width="230" height="220" fill="#3a251a" stroke="#543626" stroke-width="2" />
+            <!-- Backdoor Arrival -->
+            <circle class="hud-room-trigger" data-stop-id="backdoor" cx="810" cy="780" r="30" fill="#e7951b" />
+          </g>
+
+          <!-- Level 2 HUD Outline -->
+          <g id="hud-level2-floor" style="display:none;">
+            <rect class="hud-room-trigger" data-stop-id="upstairs" x="270" y="120" width="560" height="620" fill="#422e1f" stroke="#7a5539" stroke-width="2" />
+            <rect class="hud-room-trigger" data-stop-id="upstairs" x="850" y="120" width="260" height="340" fill="#202227" stroke="#4a505b" stroke-width="2" />
+          </g>
+
+          <!-- Animated Camera Avatar with Vision Light Cone -->
+          <g id="hud-camera-avatar" transform="translate(810, 780) rotate(0)">
+            <polygon points="-40,-110 40,-110 0,-10" fill="url(#hudConeGrad)" opacity="0.65" />
+            <circle r="22" fill="#120b08" stroke="#f5a623" stroke-width="4" />
+            <circle r="8" fill="#f5a623" />
+          </g>
+
+          <defs>
+            <radialGradient id="hudConeGrad" cx="50%" cy="100%" r="90%">
+              <stop offset="0%" stop-color="#F5A623" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#E7951B" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+        </svg>
+        <span class="hud-legend">Click any room to navigate directly</span>
+      </div>
+
+      <!-- Walkthrough UI Overlay Container -->
+      <div class="walkthrough-overlay-container">
+        <!-- Floating Glassmorphic Room Spec Card -->
+        <div class="walkthrough-info-card">
+          <div class="card-top-row">
+            <span class="wt-stop-badge" id="wt-kicker">STOP 1 OF 8 • SPEAKEASY DISCOVERY</span>
+            <span class="wt-stop-number" id="wt-stop-number">01</span>
+          </div>
+
+          <h2 class="wt-title" id="wt-title">The Secret "Back Door" Arrival</h2>
+          <div class="wt-subtitle" id="wt-subtitle">Clarkson Road North Rear Entrance</div>
+
+          <div class="wt-capacity-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span id="wt-capacity">Private Arrival & Parking</span>
+          </div>
+
+          <p class="wt-desc" id="wt-desc">
+            A quiet alleyway off Clarkson Road North leads to Mississauga’s most celebrated hidden entrance. An amber lantern glows above the weathered dark walnut door, welcoming patrons into a romantic Italian sanctuary just as it did on opening night in 1981.
+          </p>
+
+          <div class="wt-chips-group" id="wt-chips">
+            <span class="wt-chip">Aged Walnut Timber</span>
+            <span class="wt-chip">Warm Amber Lantern (#F5A623)</span>
+            <span class="wt-chip">Heritage Fanlight Transom</span>
+            <span class="wt-chip">Clarkson Brickwork</span>
+          </div>
+
+          <div class="wt-quote-box" id="wt-quote">
+            “Enter through the back door — where Mississauga fine dining began in 1981.”
+          </div>
+
+          <div class="wt-actions">
+            <button class="btn btn-gold trigger-reservation-modal">Reserve This Space</button>
+            <a href="floorplan.html" target="_blank" class="btn btn-outline-gold" style="padding: 10px 18px; font-size: 12.5px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              View Full CAD Blueprint
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Walkthrough Bottom Controller Bar -->
+      <div class="walkthrough-bottom-bar">
+        <div class="wt-ctrl-btns">
+          <button class="wt-ctrl-btn" id="wt-prev-btn" title="Previous Room">‹</button>
+          <button class="wt-ctrl-btn" id="wt-next-btn" title="Next Room">›</button>
+        </div>
+        
+        <div class="wt-progress-track">
+          <div class="wt-progress-fill" id="wt-progress-fill"></div>
+        </div>
+
+        <button class="btn btn-outline-gold" id="wt-play-btn" style="padding: 8px 18px; font-size: 12.5px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Auto Walkthrough
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       COMPREHENSIVE MENU & CULINARY SHOWCASE
+       ========================================================================== -->
+  <section class="menu-section" id="menus">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-kicker">Chef Mark D’Souza & Michael Morra Jr.</span>
+        <h2 class="section-title">The Culinary Repertoire</h2>
+        <p class="section-subtitle">
+          Authentic Italian recipes honored for 44 years, elevated with contemporary flair and the finest regional ingredients. Explore our complete à la carte dinner menus, cellar vintages, and private event packages.
+        </p>
+      </div>
+
+      <!-- Menu Interactive Controls -->
+      <div class="menu-filter-bar">
+        <div class="menu-search-wrapper">
+          <svg class="menu-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="menu-search-input" id="menu-search-input" placeholder="Search dishes, pasta, veal, wine, or dietary tags...">
+        </div>
+
+        <div class="menu-tabs" id="menu-tabs">
+          <!-- Dynamically populated by js/app.js -->
+        </div>
+      </div>
+
+      <!-- Menu Items Grid -->
+      <div class="menu-items-grid" id="menu-items-grid">
+        <!-- Dynamically populated from MENU_DATA in js/menus.js -->
+      </div>
+
+      <!-- Canapés & Event Add-ons Showcase -->
+      <div class="menu-extra-showcase">
+        <div class="extra-col">
+          <h4>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Hors d'Oeuvres & Canapés
+          </h4>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Served Butler-style for cocktail receptions and private salon bookings.</p>
+          <div class="extra-items-list">
+            <div class="extra-item-row">
+              <span class="extra-item-name">Goat Cheese, Tomato & Fresh Basil in Siljan Cup</span>
+              <span class="extra-item-price">$2.75 / piece</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Smoked Salmon Canapé with Lemon Dill Mascarpone</span>
+              <span class="extra-item-price">$2.75 / piece</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Prosciutto di Parma with Sweet Melon</span>
+              <span class="extra-item-price">$2.75 / piece</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Double Cream Brie with Toasted Walnuts & Honey</span>
+              <span class="extra-item-price">$2.75 / piece</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Colossal Tiger Shrimp Cocktail with Cocktail Sauce (90 pcs)</span>
+              <span class="extra-item-price">$195.00</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Shaved Prime Roast Beef Crostini with Horseradish Crème</span>
+              <span class="extra-item-price">$3.50 / piece</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="extra-col">
+          <h4>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Private Event Course Add-Ons
+          </h4>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Customize any of our six private event banquets with extra courses.</p>
+          <div class="extra-items-list">
+            <div class="extra-item-row">
+              <span class="extra-item-name">Chef’s Daily Artisanal Soup of the Day</span>
+              <span class="extra-item-price">$8.00 / guest</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Organic Garden House Salad with Balsamic Emulsion</span>
+              <span class="extra-item-price">$9.00 / guest</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Traditional Caesar Salad with 24-Mo Parmigiano Reggiano</span>
+              <span class="extra-item-price">$14.00 / guest</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Grand Seafood Appetizer (Shrimp, Scallop, Calamari, Clam, Mussels)</span>
+              <span class="extra-item-price">$24.00 / guest</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Antipasto Misto Platter (Prosciutto, Salami, Bocconcini, Olives)</span>
+              <span class="extra-item-price">$14.00 / guest</span>
+            </div>
+            <div class="extra-item-row">
+              <span class="extra-item-name">Middle Course Penne Tomato Basil</span>
+              <span class="extra-item-price">$8.00 / guest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wine List Download Callout -->
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="assets/documents_and_menus/michaels-back-door-full-wine-list.pdf" target="_blank" class="btn btn-outline-gold" style="margin-right: 14px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download Full Sommelier Wine List (PDF)
+        </a>
+        <a href="assets/documents_and_menus/michaels-back-door-event-menu-add-ons-pricing.pdf" target="_blank" class="btn btn-outline-gold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download Event Banquet Menus & Add-Ons (PDF)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PRIVATE DINING & EVENT SPACES
+       ========================================================================== -->
+  <section class="private-events-section" id="events">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-kicker">Unforgettable Gatherings</span>
+        <h2 class="section-title">Private Dining & Event Spaces</h2>
+        <p class="section-subtitle">
+          From intimate family celebrations and corporate board dinners to milestone weddings and bridal showers, our four distinct event spaces accommodate groups from 10 to 80 guests.
+        </p>
+      </div>
+
+      <div class="rooms-grid">
+        <!-- Room 1: The Solarium -->
+        <div class="room-card">
+          <div class="room-card-img">
+            <img src="assets/interior_and_ambience/solarium-dining-room-sunlight.jpg" alt="The Solarium">
+            <span class="room-capacity-flag">30 to 42 Private • 16 to 22 Semi-Private</span>
+          </div>
+          <div class="room-card-body">
+            <h3>The Solarium</h3>
+            <p>
+              Located in the east wing of the main dining room, beautifully sun-drenched by day and warm & elegant under the stars at night. Features floor-to-ceiling glass atrium skylights and French doors opening to a Juliet balcony.
+            </p>
+            <div class="wt-chips-group" style="margin-bottom: 20px;">
+              <span class="wt-chip">Glass Skylight</span>
+              <span class="wt-chip">French Balcony</span>
+              <span class="wt-chip">Bridal Showers</span>
+              <span class="wt-chip">Daylight to Starlight</span>
+            </div>
+            <button class="btn btn-outline-gold trigger-event-modal" style="width:100%;">Inquire for Solarium</button>
+          </div>
+        </div>
+
+        <!-- Room 2: The Wine Room -->
+        <div class="room-card">
+          <div class="room-card-img">
+            <img src="assets/interior_and_ambience/wine-room-private-dining-table.jpg" alt="The Private Wine Room">
+            <span class="room-capacity-flag">10 to 18 Guests Seated</span>
+          </div>
+          <div class="room-card-body">
+            <h3>The Private Wine Room</h3>
+            <p>
+              Our intimate sommelier cellar room enclosed floor-to-ceiling with 150+ vintage Italian and international labels. Anchored by a solid walnut tasting table, it offers acoustic seclusion for executive dinners and family milestones.
+            </p>
+            <div class="wt-chips-group" style="margin-bottom: 20px;">
+              <span class="wt-chip">150+ Vintages</span>
+              <span class="wt-chip">Walnut Board Table</span>
+              <span class="wt-chip">Executive Audio</span>
+              <span class="wt-chip">Complete Privacy</span>
+            </div>
+            <button class="btn btn-outline-gold trigger-event-modal" style="width:100%;">Inquire for Wine Room</button>
+          </div>
+        </div>
+
+        <!-- Room 3: Upstairs at Michael's -->
+        <div class="room-card">
+          <div class="room-card-img">
+            <img src="assets/interior_and_ambience/upstairs-at-michaels-wood-slat-lounge.jpg" alt="Upstairs at Michael's">
+            <span class="room-capacity-flag">20 to 42 Seated • Up to 50 Receptions</span>
+          </div>
+          <div class="room-card-body">
+            <h3>Upstairs at Michael’s</h3>
+            <p>
+              Our newly renovated contemporary second-floor private salon. Contemporary vertical acoustic timber slats, dedicated fluted matte black bar, brushed brass bird lamps, private executive restrooms, and custom AV presentation capabilities.
+            </p>
+            <div class="wt-chips-group" style="margin-bottom: 20px;">
+              <span class="wt-chip">Acoustic Wood Slats</span>
+              <span class="wt-chip">Private Bar & Bartender</span>
+              <span class="wt-chip">Dedicated Restrooms</span>
+              <span class="wt-chip">AV Presentation Ready</span>
+            </div>
+            <button class="btn btn-outline-gold trigger-event-modal" style="width:100%;">Inquire for Upstairs</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Private Event Contract & Inquire Banner -->
+      <div class="event-contract-card">
+        <div class="contract-text">
+          <h3>Planning a Celebration or Corporate Dinner?</h3>
+          <p>
+            Our dedicated event coordinator works with you on customized menus, table setup, wine pairings, and timeline execution. Menu selections must be finalized 72 hours prior to the event.
+          </p>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-gold trigger-event-modal">Request Event Proposal (RFP)</button>
+          <a href="assets/documents_and_menus/michaels-back-door-private-event-agreement-and-room-capacities.pdf" target="_blank" class="btn btn-outline-gold">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download Event Agreement (PDF)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERITAGE & OUR STORY (1981 - PRESENT)
+       ========================================================================== -->
+  <section class="story-section" id="story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-image-mosaic">
+          <div class="story-mosaic-img featured">
+            <img src="assets/people_and_history/michael-morra-sr-founder.jpg" alt="Founder Michael Morra Sr.">
+          </div>
+          <div class="story-mosaic-img">
+            <img src="assets/interior_and_ambience/main-dining-room-burgundy-sconces.jpg" alt="Heritage Dining Salon">
+          </div>
+          <div class="story-mosaic-img">
+            <img src="assets/culinary_and_dishes/fresh-pasta-ravioli-craft.jpg" alt="Scratch Pasta Craft">
+          </div>
+          <div class="story-floating-badge">
+            <strong>44</strong>
+            <span>Years of Excellence</span>
+          </div>
+        </div>
+
+        <div class="story-narrative">
+          <span class="section-kicker">Heritage & Passion</span>
+          <h2 class="section-title">Four Decades of Italian Hospitality</h2>
+          <p>
+            Established in 1981 by <strong>Michael Morra Sr.</strong>, Michael’s Back Door Restaurant has been providing Mississauga and the Greater Toronto Area with award-winning Italian cuisine and professional courteous service in a warm, comfortable atmosphere for 44 continuous years.
+          </p>
+          <p>
+            Principal owner <strong>Michael Morra Jr.</strong>, along with partner and Executive Chef <strong>Mark D’Souza</strong>, invite you to experience creative Italian and continental fare, featuring the freshest scratch ingredients and an extensive cellar of rare vintages.
+          </p>
+          <p>
+            Head Chef Mark D’Souza joined Michael’s Back Door in 2015. Since taking the helm of the kitchen, Chef Mark and his brigade have focused on adding a modern twist to traditional rustic regional Italian dishes, from hand-shaped agnolotti to our legendary lobster angel hair.
+          </p>
+          <p>
+            Whether you are looking for a casual family dinner, a romantic anniversary in Lover’s Lane, or a milestone gathering under the stars in the Solarium, Michael’s Back Door has the perfect table waiting for you.
+          </p>
+
+          <div class="awards-row">
+            <div class="award-item">
+              <img src="assets/awards_and_recognition/dirona-distinguished-restaurants-north-america-badge.png" alt="DiRoNA Award Badge">
+              <span>Distinguished Restaurants<br>of North America</span>
+            </div>
+            <div class="award-item">
+              <img src="assets/awards_and_recognition/storwells-choice-best-neighborhood-restaurant-ribbon.png" alt="Storwell Choice Badge">
+              <span>Storwell's Choice<br>Best Neighborhood Restaurant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       GIFT CARDS & TAKEOUT / DELIVERY
+       ========================================================================== -->
+  <section class="giftcards-section" id="giftcards">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-kicker">The Gift of Italian Dining</span>
+        <h2 class="section-title">Gift Cards & Takeout</h2>
+        <p class="section-subtitle">
+          Share the warmth of Michael's Back Door with family, friends, and colleagues. Choose between our classic physical presentation or instantaneous digital delivery.
+        </p>
+      </div>
+
+      <div class="giftcards-grid">
+        <!-- Card 1: Traditional Gift Card -->
+        <div class="gc-card">
+          <div class="section-kicker" style="margin-bottom:0;">In-Restaurant or Phone</div>
+          <h3>Traditional Gift Card</h3>
+          <p>
+            Presented as a custom embossed card inside a luxury sleeve. Perfect for birthdays, holidays, or executive appreciation. Available for pickup at 1715 Lakeshore Rd W (Tue–Sun 3pm–9pm) or by calling <strong>905-822-5751</strong>.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+            <span class="wt-chip">$50</span>
+            <span class="wt-chip">$100</span>
+            <span class="wt-chip">$150</span>
+            <span class="wt-chip">$200</span>
+            <span class="wt-chip">Custom Value</span>
+          </div>
+          <button class="btn btn-outline-gold trigger-giftcard-modal">Order Traditional Card</button>
+        </div>
+
+        <!-- Card 2: Electronic e-Gift Card -->
+        <div class="gc-card">
+          <div class="section-kicker" style="margin-bottom:0;">Instant Email Delivery</div>
+          <h3>Electronic Gift Card (e-Card)</h3>
+          <p>
+            Ideal for last-minute celebrations or sending love to friends from afar. An electronic Michael’s Back Door e-card arrives straight in their inbox with a personalized note, redeemable directly on their smartphone.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+            <span class="wt-chip">Instant Delivery</span>
+            <span class="wt-chip">Personalized Note</span>
+            <span class="wt-chip">Never Expires</span>
+          </div>
+          <button class="btn btn-gold trigger-giftcard-modal">Send an e-Gift Card</button>
+        </div>
+      </div>
+
+      <!-- Online Ordering & Delivery Partners -->
+      <div style="margin-top: 60px; background: rgba(22, 14, 9, 0.7); border: 1px solid var(--espresso-border); border-radius: var(--radius-lg); padding: 36px; text-align: center;">
+        <h3 style="font-family: var(--font-serif); font-size: 26px; color: #fff; margin-bottom: 8px;">Takeout & Delivery Partners</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; max-width: 600px; margin: 0 auto 20px;">
+          Enjoy your favorite Michael's Back Door dishes from the comfort of home. Call us directly for curbside pickup, or order through our delivery partners.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="tel:9058225751" class="btn btn-outline-gold">Call for Direct Pickup: 905-822-5751</a>
+          <a href="https://www.ubereats.com" target="_blank" rel="noopener" class="btn btn-outline-gold">Uber Eats</a>
+          <a href="https://www.doordash.com" target="_blank" rel="noopener" class="btn btn-outline-gold">DoorDash</a>
+          <a href="https://www.skipthedishes.com" target="_blank" rel="noopener" class="btn btn-outline-gold">SkipTheDishes</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       VISIT US, DIRECTIONS & SECRET "BACK DOOR" GUIDE
+       ========================================================================== -->
+  <section class="visit-section" id="visit">
+    <div class="container">
+      <div class="visit-grid">
+        <div class="visit-info-card">
+          <div>
+            <span class="section-kicker">Clarkson Village, Mississauga</span>
+            <h2 class="section-title" style="font-size: 38px;">Visit Michael’s Back Door</h2>
+            <p style="color: var(--text-secondary); font-size: 14.5px;">
+              Conveniently located in historic Clarkson Village on the north side of Lakeshore Road West, just east of Southdown Road.
+            </p>
+          </div>
+
+          <!-- Secret Back Door Callout -->
+          <div class="backdoor-secret-callout">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              How to Find the Iconic "Back Door" Entrance
+            </h4>
+            <p>
+              Please note: The restaurant parking lot and main entrance are located in the <strong>back of the building</strong>. Turn onto <strong>Clarkson Road North</strong> from Lakeshore, and take the immediate alleyway into our dedicated private guest parking lot. Look for the glowing amber lantern above the back door!
+            </p>
+          </div>
+
+          <!-- Hours Table -->
+          <div>
+            <h4 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold-champagne); margin-bottom: 12px;">Hours of Operation</h4>
+            <table class="hours-table">
+              <tbody>
+                <tr><td>Monday</td><td style="color: var(--gold-primary);">Closed (Available for Private Buyouts)</td></tr>
+                <tr><td>Tuesday</td><td>5:00 PM – 9:00 PM</td></tr>
+                <tr><td>Wednesday</td><td>5:00 PM – 9:00 PM</td></tr>
+                <tr><td>Thursday</td><td>5:00 PM – 9:00 PM</td></tr>
+                <tr><td>Friday</td><td>5:00 PM – 10:00 PM</td></tr>
+                <tr><td>Saturday</td><td>5:00 PM – 10:00 PM</td></tr>
+                <tr><td>Sunday</td><td>5:00 PM – 9:00 PM</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display:flex; gap:14px; flex-wrap:wrap;">
+            <a href="tel:9058225751" class="btn btn-gold">Call: (905) 822-5751</a>
+            <a href="https://maps.google.com/?q=1715+Lakeshore+Road+West+Mississauga+ON" target="_blank" rel="noopener" class="btn btn-outline-gold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Open in Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <div class="map-embed-wrapper">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2894.675604168772!2d-79.62678682333796!3d43.51000676173007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b4395cba1b93f%3A0xe5567b5dbba20db9!2sMichael's%20Back%20Door%20Restaurant!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Michael's Back Door Restaurant Location Map">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DIALOGS SYSTEM
+       ========================================================================== -->
+
+  <!-- 1. Reservation Modal -->
+  <div class="modal-overlay" id="reservation-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn">✕</button>
+      <h3>Reserve a Table</h3>
+      <p class="modal-sub">Experience 44 years of Italian culinary tradition. For parties larger than 8, please call us directly.</p>
+      
+      <div id="res-success-message" style="display:none; margin-bottom:20px;"></div>
+
+      <form id="reservation-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="res-date">Date</label>
+            <input type="date" id="res-date" class="form-control" required value="2026-10-20">
+          </div>
+          <div class="form-group">
+            <label for="res-time">Time</label>
+            <select id="res-time" class="form-control" required>
+              <option value="5:00 PM">5:00 PM</option>
+              <option value="5:30 PM">5:30 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="6:30 PM">6:30 PM</option>
+              <option value="7:00 PM" selected>7:00 PM</option>
+              <option value="7:30 PM">7:30 PM</option>
+              <option value="8:00 PM">8:00 PM</option>
+              <option value="8:30 PM">8:30 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="res-guests">Number of Guests</label>
+            <select id="res-guests" class="form-control" required>
+              <option value="2 Guests">2 Guests (Lover’s Lane / Main)</option>
+              <option value="3 Guests">3 Guests</option>
+              <option value="4 Guests" selected>4 Guests</option>
+              <option value="5 Guests">5 Guests</option>
+              <option value="6 Guests">6 Guests</option>
+              <option value="7-8 Guests">7 to 8 Guests</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="res-area">Preferred Seating Area</label>
+            <select id="res-area" class="form-control">
+              <option value="Any Table">First Available Table</option>
+              <option value="Lover's Lane">Lover’s Lane (Romantic 2-Top)</option>
+              <option value="Main Dining Room">Main Dining Room (Burgundy)</option>
+              <option value="Solarium">The Solarium (Glass Atrium)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="res-name">Full Name</label>
+          <input type="text" id="res-name" class="form-control" placeholder="Your name" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="res-email">Email Address</label>
+            <input type="email" id="res-email" class="form-control" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="res-phone">Phone Number</label>
+            <input type="tel" id="res-phone" class="form-control" placeholder="(905) 000-0000" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="res-notes">Special Requests / Dietary Allergies / Occasion</label>
+          <textarea id="res-notes" class="form-control" rows="2" placeholder="Anniversary, birthday, gluten-free, etc."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-gold" style="width:100%; margin-top:8px;">Confirm Table Reservation</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Event RFP Modal -->
+  <div class="modal-overlay" id="event-rfp-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn">✕</button>
+      <h3>Private Event Inquiry (RFP)</h3>
+      <p class="modal-sub">Tell us about your upcoming celebration. We accommodate groups from 10 to 80 guests.</p>
+      
+      <div id="rfp-success-message" style="display:none; margin-bottom:20px;"></div>
+
+      <form id="event-rfp-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rfp-name">First & Last Name</label>
+            <input type="text" id="rfp-name" class="form-control" required placeholder="Organizer name">
+          </div>
+          <div class="form-group">
+            <label for="rfp-company">Company / Organization (Optional)</label>
+            <input type="text" id="rfp-company" class="form-control" placeholder="Company name">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rfp-email">Email Address</label>
+            <input type="email" id="rfp-email" class="form-control" required placeholder="name@example.com">
+          </div>
+          <div class="form-group">
+            <label for="rfp-phone">Phone Number</label>
+            <input type="tel" id="rfp-phone" class="form-control" required placeholder="(905) 000-0000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rfp-occasion">Occasion</label>
+            <select id="rfp-occasion" class="form-control" required>
+              <option value="Birthday Celebration">Birthday Celebration</option>
+              <option value="Wedding / Reception">Wedding or Reception</option>
+              <option value="Bridal / Baby Shower">Bridal / Baby Shower</option>
+              <option value="Anniversary Dinner">Anniversary Dinner</option>
+              <option value="Corporate / Board Dinner">Corporate or Board Dinner</option>
+              <option value="Baptism / Communion">Baptism / First Communion / Confirmation</option>
+              <option value="Celebration of Life / Wake">Celebration of Life / Wake</option>
+              <option value="Other">Other Private Event</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rfp-space">Preferred Space</label>
+            <select id="rfp-space" class="form-control">
+              <option value="Upstairs at Michael's">Upstairs at Michael’s (20–42 guests)</option>
+              <option value="The Solarium">The Solarium (30–42 guests)</option>
+              <option value="The Wine Room">The Wine Room (10–18 guests)</option>
+              <option value="Full Buyout">Full Restaurant Buyout (Up to 80)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rfp-date">Desired Event Date</label>
+            <input type="date" id="rfp-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="rfp-guests">Estimated Guests</label>
+            <input type="number" id="rfp-guests" class="form-control" min="8" max="100" placeholder="e.g. 25" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rfp-notes">Special Requirements / Custom Menu Requests</label>
+          <textarea id="rfp-notes" class="form-control" rows="3" placeholder="Tell us more about your event goals, timeline, and menu preferences."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-gold" style="width:100%;">Submit Event Inquiry</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Gift Card Modal -->
+  <div class="modal-overlay" id="giftcard-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn">✕</button>
+      <h3>Order Michael’s Back Door Gift Card</h3>
+      <p class="modal-sub">Delight someone with an evening of Italian fine dining.</p>
+
+      <div id="gc-success-message" style="display:none; margin-bottom:20px;"></div>
+
+      <form id="giftcard-form">
+        <div class="form-group">
+          <label>Select Gift Card Amount</label>
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:6px;">
+            <label style="border:1px solid var(--espresso-border); padding:10px; border-radius:8px; text-align:center; cursor:pointer;">
+              <input type="radio" name="gc-amount" value="$50"> $50
+            </label>
+            <label style="border:1px solid var(--espresso-border); padding:10px; border-radius:8px; text-align:center; cursor:pointer;">
+              <input type="radio" name="gc-amount" value="$100" checked> $100
+            </label>
+            <label style="border:1px solid var(--espresso-border); padding:10px; border-radius:8px; text-align:center; cursor:pointer;">
+              <input type="radio" name="gc-amount" value="$150"> $150
+            </label>
+            <label style="border:1px solid var(--espresso-border); padding:10px; border-radius:8px; text-align:center; cursor:pointer;">
+              <input type="radio" name="gc-amount" value="$200"> $200
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gc-recipient-name">Recipient Name</label>
+          <input type="text" id="gc-recipient-name" class="form-control" placeholder="Recipient's full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="gc-recipient-email">Recipient Email (for e-Gift Card)</label>
+          <input type="email" id="gc-recipient-email" class="form-control" placeholder="recipient@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="gc-custom-msg">Personal Message</label>
+          <textarea id="gc-custom-msg" class="form-control" rows="2" placeholder="Happy Birthday! Enjoy dinner at Michael's Back Door..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-gold" style="width:100%; margin-top:8px;">Proceed to Secure Checkout</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Directions Modal -->
+  <div class="modal-overlay" id="directions-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn">✕</button>
+      <h3>How to Find the Back Door</h3>
+      <p class="modal-sub">1715 Lakeshore Road West, Mississauga, ON L5J 1J4</p>
+      
+      <div style="background:#140c08; border:1px solid var(--gold-champagne); border-radius:12px; padding:20px; margin-bottom:20px;">
+        <h4 style="font-family:var(--font-serif); font-size:22px; color:var(--gold-primary); margin-bottom:8px;">Rear Alley Parking Directions:</h4>
+        <ol style="margin-left:20px; font-size:14px; color:#ddd; line-height:1.75;">
+          <li>From <strong>Lakeshore Road West</strong>, turn north onto <strong>Clarkson Road North</strong>.</li>
+          <li>Within 30 meters, turn into the immediate alleyway entrance behind the commercial buildings.</li>
+          <li>Park in our private dedicated guest lot directly behind the restaurant.</li>
+          <li>Look for the iconic dark walnut door under the glowing amber lantern.</li>
+        </ol>
+      </div>
+
+      <a href="https://maps.google.com/?q=1715+Lakeshore+Road+West+Mississauga+ON" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;">
+        Open Turn-by-Turn GPS Navigation
+      </a>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>Michael’s Back Door</h2>
+          <p>
+            Mississauga’s premier Italian fine dining establishment since 1981. Celebrating 44 years of scratch pasta, rare cellar vintages, and cherished celebrations in Clarkson Village.
+          </p>
+          <div style="font-size: 13px; color: var(--gold-champagne);">
+            Principal Owner: Michael Morra Jr.<br>
+            Executive Chef Partner: Mark D’Souza
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#walkthrough-section">3D Walkthrough Tour</a></li>
+            <li><a href="#menus">Dinner Menu</a></li>
+            <li><a href="#menus">Dessert Menu</a></li>
+            <li><a href="#menus">Sommelier Wine List</a></li>
+            <li><a href="#events">Private Event Salons</a></li>
+            <li><a href="floorplan.html" target="_blank">Architectural Blueprint</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Information</h4>
+          <ul class="footer-links">
+            <li><a href="#story">Our 44-Year Story</a></li>
+            <li><a href="#giftcards">Traditional Gift Cards</a></li>
+            <li><a href="#giftcards">Electronic e-Gift Cards</a></li>
+            <li><a href="#visit">Hours & Parking</a></li>
+            <li><a href="assets/documents_and_menus/michaels-back-door-private-event-agreement-and-room-capacities.pdf" target="_blank">Event Guidelines (PDF)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact & Reservations</h4>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            1715 Lakeshore Rd W<br>Mississauga, ON L5J 1J4
+          </p>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:16px;">
+            Tel: <a href="tel:9058225751" style="color:var(--gold-primary); font-weight:600;">(905) 822-5751</a><br>
+            Email: <a href="mailto:michael@michaelsbackdoor.com" style="color:var(--gold-champagne);">michael@michaelsbackdoor.com</a>
+          </p>
+          <button class="btn btn-gold trigger-reservation-modal" style="width:100%; font-size:12.5px; padding:10px;">
+            Reserve a Table
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <span>© 1981–2025 Michael’s Back Door Restaurant. All Rights Reserved.</span>
+        <span>Entrance & Guest Parking via Clarkson Road North</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/menus.js"></script>
+  <script src="js/walkthrough.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
